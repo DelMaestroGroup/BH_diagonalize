@@ -1,4 +1,4 @@
-# BH_diagonalize
+# tV_diagonalize
 
 A Julia exact diagonalization code for the [Bose-Hubbard model](https://en.wikipedia.org/wiki/Bose%E2%80%93Hubbard_model) with a focus on entanglement entropy.
 
