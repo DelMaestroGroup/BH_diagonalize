@@ -9,7 +9,8 @@ export
 
     sparse_hamiltonian,
     particle_entropy,
-    spatial_entropy
+    spatial_entropy,
+    particle_entropy_mod
 
 """
 Boundary conditions.
@@ -21,5 +22,7 @@ Boundary conditions.
 include("sparse_hamiltonian.jl")
 include("particle_entropy.jl")
 include("spatial_entropy.jl")
+include("particle_entropy_mod.jl")
+
 
 end

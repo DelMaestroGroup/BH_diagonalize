@@ -18,8 +18,8 @@ function spatial_entropy(basis::AbstractSzbasis, A, d::Vector{Float64})
     norms = zeros(Float64, basis.N+1)
 
     for (i, bra) in enumerate(basis)
-        braA = view(bra, A)
-        braB = view(bra, B)
+        braA = sub(bra, A)
+        braB = sub(bra, B)
 
         row = serial_num(basis, length(A), sum(braA), braA)
         col = serial_num(basis, length(B), sum(braB), braB)
@@ -48,17 +48,14 @@ function spatial_entropy(basis::AbstractSzbasis, A, d::Vector{Float64})
 
     # Operational.
     Ss_op = [S / sqrt(n) for (S, n) in zip(Ss_raw, norms)]
-    errs_op = [abs(sum(S.^2) - 1.0) for S in Ss_op if !isempty(S)]
+    errs_op = [abs(sum(S.^2) - 1.0) for S in Ss_op]
 
     if any(errs_op .> 1e-12)
         warn("RDM eigenvalue error ", maximum(errs_op))
     end
 
-    S2_op = 0.0
-    for (S, n) in zip(Ss_op, norms)
-        isempty(S) && continue
-        S2_op -= log(sum(S.^4)) * n
-    end
+    S2s_op = [-log(sum(S.^4)) for S in Ss_op]
+    S2_op = dot(norms, S2s_op)
 
     S2_sp, S2_op
 end

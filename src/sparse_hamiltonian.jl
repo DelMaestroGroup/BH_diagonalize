@@ -22,13 +22,19 @@ function sparse_hamiltonian(basis::AbstractSzbasis, Ts::AbstractVector{Float64},
         # Diagonal part
         Usum = 0
         musum = 0
-        for j=1:basis.K
-            Usum += bra[j] * (bra[j]-1)
+	#mus[1]=0.011
+	#mus[2]=0.01
+	#mus[3]=0.00001
+	#mus[4]=0.00001
+        for j=1:end_site
             musum += mus[j] * bra[j]
+            j_next = j % basis.K + 1
+            Usum += bra[j] * (bra[j_next])
         end
+
         push!(rows, i)
         push!(cols, i)
-        push!(elements, U * Usum/2. - musum)
+        push!(elements, U * Usum - musum)
 
         # Off-diagonal part
         for j=1:end_site
@@ -40,9 +46,13 @@ function sparse_hamiltonian(basis::AbstractSzbasis, Ts::AbstractVector{Float64},
                     ket[site1] -= 1
                     ket[site2] += 1
                     if ket in basis
+                        factor = 1
+                        if j_next == 1
+                            factor = (1)^(basis.N-1)
+                        end
                         push!(rows, i)
                         push!(cols, serial_num(basis, ket))
-                        push!(elements, -Ts[j] * sqrt(bra[site1]) * sqrt(bra[site2]+1))
+                        push!(elements, -Ts[j] * sqrt(bra[site1]) * sqrt(bra[site2]+1) * factor)
                     end
                 end
             end
