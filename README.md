@@ -1,4 +1,4 @@
-# tV_diagonalize
+# tV diagonalize
 
 A Julia exact diagonalization code for the t-V model of interacting spinless fermions in one spatial dimension with a focus on particle entanglement entropy.
 
